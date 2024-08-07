@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+%p:输出优先级，即DEBUG,INFO,WARN,ERROR,FATAL
+%r:输出自应用启动到输出该日志讯息所耗费的毫秒数
+%t:输出产生该日志事件的线程名
+%f:输出日志讯息所属的类别的类别名
+%c:输出日志讯息所属的类的全名
+%d:输出日志时间点的日期或时间，指定格式的方式： %d{yyyy-MM-dd HH:mm:ss}
+%l:输出日志事件的发生位置，即输出日志讯息的语句在他所在类别的第几行。
+%m:输出代码中指定的讯息，如log(message)中的message
+%n:输出一个换行符号
+-->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <springProperty scope="context" name="APP_NAME"				source="project.app.name"			defaultValue="${spring.application.name}"/>
+    <springProperty scope="context" name="APP_ID"				source="app.id"						defaultValue="${APP_NAME}"				/>
+    <springProperty scope="context" name="LOG_HOME"				source="project.log.home"			defaultValue="/wls/apache/applogs"		/>
+    <springProperty scope="context" name="LOG_ENCODING"			source="project.log.encoding"		defaultValue="utf8"						/>
+    <springProperty scope="context" name="LOG_LEVEL"			source="project.log.level"			defaultValue="info"						/>
+    <springProperty scope="context" name="LOG_FILE_MAX_SIZE"	source="project.log.maxSize"		defaultValue="100MB"					/>
+    <springProperty scope="context" name="LOG_FILE_TOTAL_SIZE"	source="project.log.totalSize"		defaultValue="10GB"						/>
+    <springProperty scope="context" name="LOG_FILE_MAX_HISTORY"	source="project.log.maxHistory"		defaultValue="30"						/>
+    <springProperty scope="context" name="LOG_PATTERN_FILE_ALL"	source="project.log.fileAllPattern"
+                    defaultValue="%date{yyyy-MM-dd HH:mm:ss.SSS}[%-5level][%thread][requestId=%X{requestId:-}][traceId=%X{X-B3-TraceId:-}][%class{50}.%method:%line]: %msg%n"		/>
+    <springProperty scope="context" name="LOG_PATTERN_CONSOLE"	source="project.log.consolePattern"	defaultValue="${LOG_PATTERN_FILE_ALL}"	/>
+
+    <property name="LOG_FILE_NAME"				value="${APP_ID}"					/>
+    <property name="LOG_FILE_PATH"				value="${LOG_HOME}"					/>
+    <property name="LOG_FILE_ARCHIVED_PATH"		value="${LOG_FILE_PATH}/archived"	/>
+
+
+
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <!--本机日志输出彩色日志-->
+    <springProfile name="local">
+        <property name="OUTPUT_PATTERN" value="${OUTPUT_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} [%clr(%-15.15thread)] [%clr(reqId:%X{X-Request-ID:-}){magenta}]  %clr(%-5level) %clr(%-40.40logger{39}) | %clr(%-4line){cyan} | %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    </springProfile>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN_CONSOLE}</pattern>
+            <charset>${LOG_ENCODING}</charset>
+        </encoder>
+    </appender>
+
+    <appender name="LOG_FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}/${LOG_FILE_NAME}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN_FILE_ALL}</pattern>
+            <charset>${LOG_ENCODING}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_FILE_ARCHIVED_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>
+            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${LOG_FILE_TOTAL_SIZE}</totalSizeCap>
+        </rollingPolicy>
+        <!--单位字节 -->
+        <bufferSize>2097152</bufferSize>
+    </appender>
+
+    <root level="${LOG_LEVEL}">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="LOG_FILE_ALL" />
+    </root>
+</configuration>
+
+
