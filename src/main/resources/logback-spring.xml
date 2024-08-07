@@ -22,14 +22,14 @@
     <springProperty scope="context" name="LOG_FILE_TOTAL_SIZE"	source="project.log.totalSize"		defaultValue="10GB"						/>
     <springProperty scope="context" name="LOG_FILE_MAX_HISTORY"	source="project.log.maxHistory"		defaultValue="30"						/>
     <springProperty scope="context" name="LOG_PATTERN_FILE_ALL"	source="project.log.fileAllPattern"
-                    defaultValue="%date{yyyy-MM-dd HH:mm:ss.SSS}[%-5level][%thread][requestId=%X{requestId:-}][traceId=%X{X-B3-TraceId:-}][%class{50}.%method:%line]: %msg%n"		/>
+                        defaultValue="%clr(%date{yyyy-MM-dd HH:mm:ss.SSS})[%clr(%-15.15thread)][%clr(requestId=%X{requestId:-}){magenta}][%clr(%-5level)][%clr(%-40.40logger{39})] | [%clr(%-4line){cyan}] | %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"
+    />
+    <!--                    defaultValue="%clr(%date{yyyy-MM-dd HH:mm:ss.SSS})[%-5level][%clr(%thread)][requestId=%X{requestId:-}][traceId=%X{X-B3-TraceId:-}][%class{50}.%method:%line]: %msg%n"-->
     <springProperty scope="context" name="LOG_PATTERN_CONSOLE"	source="project.log.consolePattern"	defaultValue="${LOG_PATTERN_FILE_ALL}"	/>
 
     <property name="LOG_FILE_NAME"				value="${APP_ID}"					/>
     <property name="LOG_FILE_PATH"				value="${LOG_HOME}"					/>
     <property name="LOG_FILE_ARCHIVED_PATH"		value="${LOG_FILE_PATH}/archived"	/>
-
-
 
     <!-- 彩色日志依赖的渲染类 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
