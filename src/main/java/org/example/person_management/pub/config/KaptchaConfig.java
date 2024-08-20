@@ -1,4 +1,4 @@
-package org.example.person_management.config;
+package org.example.person_management.pub.config;
 
 import com.google.code.kaptcha.Producer;
 import com.google.code.kaptcha.impl.DefaultKaptcha;

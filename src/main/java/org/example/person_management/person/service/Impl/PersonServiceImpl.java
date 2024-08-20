@@ -4,20 +4,21 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.example.person_management.org.entity.vo.OrgTreeVo;
+import org.example.person_management.org.service.OrgService;
 import org.example.person_management.person.entity.Person;
 import org.example.person_management.person.entity.enums.SortEnum;
 import org.example.person_management.person.entity.vo.ConditionVo;
 import org.example.person_management.person.entity.vo.ListPersonVo;
 import org.example.person_management.person.entity.vo.PersonVo;
 import org.example.person_management.person.mapper.PersonMapper;
-import org.example.person_management.person.result.Result;
-import org.example.person_management.person.result.ResultCodeEnum;
+import org.example.person_management.pub.result.Result;
+import org.example.person_management.pub.result.ResultCodeEnum;
 import org.example.person_management.person.service.PersonService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,13 +29,15 @@ public class PersonServiceImpl extends ServiceImpl<PersonMapper, Person> impleme
     @Autowired
     private PersonMapper personMapper;
 
+    @Autowired
+    private OrgService orgService;
+
     @Override
     public boolean addManagePerson(PersonVo personVo) {
         Person person = new Person();
         BeanUtils.copyProperties(personVo, person);
         int insert = personMapper.insert(person);
-        if(insert > 0) return true;
-        return false;
+        return insert > 0;
     }
 
     @Override
@@ -96,6 +99,10 @@ public class PersonServiceImpl extends ServiceImpl<PersonMapper, Person> impleme
         listPersonVo.setPersonList(pageResult.getRecords().stream().map(person -> {
             PersonVo personVo = new PersonVo();
             BeanUtils.copyProperties(person,personVo);
+            if(person.getOrg() != null){
+                OrgTreeVo orgTreeVo = orgService.queryByCode(person.getOrg());
+                personVo.setOrgVo(orgTreeVo);
+            }
             return personVo;
         }).collect(Collectors.toList()));
 
@@ -117,16 +124,19 @@ public class PersonServiceImpl extends ServiceImpl<PersonMapper, Person> impleme
 
     @Override
     public PersonVo selectById(String id) {
-        Person person = new Person();
-        person = personMapper.selectById(id);
+        Person person = personMapper.selectById(id);
+        OrgTreeVo orgTreeVo = orgService.queryByCode(person.getOrg());
         PersonVo personVo = new PersonVo();
         BeanUtils.copyProperties(person, personVo);
+        personVo.setOrgVo(orgTreeVo);
         return personVo;
     }
 
     @Override
     public PersonVo save(PersonVo personVo) {
         Person selectPerson = personMapper.selectById(personVo.getId());
+        OrgTreeVo orgTreeVo = personVo.getOrgVo();
+        personVo.setOrg(orgTreeVo.getCode());
         Person person = new Person();
         BeanUtils.copyProperties(personVo, person);
         person.setDr(selectPerson.getDr());

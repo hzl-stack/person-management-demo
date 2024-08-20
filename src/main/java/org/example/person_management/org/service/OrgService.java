@@ -40,4 +40,6 @@ public interface OrgService extends IService<Org> {
      * @return
      */
     int update(OrgUpdateVo orgUpdateVo);
+
+    OrgTreeVo queryByCode(String code);
 }

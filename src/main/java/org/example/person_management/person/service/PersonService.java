@@ -5,7 +5,7 @@ import org.example.person_management.person.entity.Person;
 import org.example.person_management.person.entity.vo.ConditionVo;
 import org.example.person_management.person.entity.vo.ListPersonVo;
 import org.example.person_management.person.entity.vo.PersonVo;
-import org.example.person_management.person.result.Result;
+import org.example.person_management.pub.result.Result;
 
 import java.util.List;
 

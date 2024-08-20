@@ -1,15 +1,14 @@
 package org.example.person_management.user.controller;
 
-import com.google.code.kaptcha.Producer;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.example.person_management.person.result.Result;
-import org.example.person_management.person.result.ResultCodeEnum;
+import org.example.person_management.pub.result.Result;
+import org.example.person_management.pub.result.ResultCodeEnum;
 import org.example.person_management.user.entity.vo.*;
 import org.example.person_management.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 
@@ -17,14 +16,14 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/hzl-web/person-management/user")
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -153,5 +152,11 @@ public class UserController {
             return Result.ok("校验成功");
         }
         return Result.fail("验证码不匹配");
+    }
+
+    @GetMapping("queryUserDropDown")
+    public Result<List<UserInfoVo>> queryUserDropDown(){
+        log.info("查询人员信息开始");
+        return Result.ok(userService.queryUserDropDown());
     }
 }

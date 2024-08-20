@@ -5,8 +5,8 @@ import org.example.person_management.org.entity.vo.OrgInsertVo;
 import org.example.person_management.org.entity.vo.OrgTreeVo;
 import org.example.person_management.org.entity.vo.OrgUpdateVo;
 import org.example.person_management.org.service.OrgService;
-import org.example.person_management.person.result.Result;
-import org.example.person_management.person.result.ResultCodeEnum;
+import org.example.person_management.pub.result.Result;
+import org.example.person_management.pub.result.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -80,7 +81,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 将盐拼接到明文后，并生成新的sha256码
             String sha256Hex = DigestUtils.sha256Hex(registerVo.getPassword() + salt);
             // 将盐混到新生成的SHA-256码中，之所以这样做是为了后期解密，校验密码
-            StringBuilder sb = new StringBuilder(80); // SHA-256是64个字符，加16个字符的盐，总共80个字符
+            // SHA-256是64个字符，加16个字符的盐，总共80个字符
+            StringBuilder sb = new StringBuilder(80);
             for (int i = 0; i < 16; i++) {
                 sb.append(sha256Hex.charAt(i * 4));
                 sb.append(salt.charAt(i));
@@ -102,7 +104,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Integer parseJwt(String token) {
         try{
             Claims claims = Jwts.parser()
-                    .setSigningKey("wrs-hzl")//指定签名密钥
+                    //指定签名密钥
+                    .setSigningKey("wrs-hzl")
                     .parseClaimsJws(token)
                     .getBody();
             if(Objects.isNull(claims)){
@@ -140,5 +143,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return userInfoVo;
         }
         return null;
+    }
+
+    @Override
+    public List<UserInfoVo> queryUserDropDown() {
+        return userMapper.queryUserDropDown().stream().map(user -> {
+            UserInfoVo userInfoVo = new UserInfoVo();
+            BeanUtils.copyProperties(user, userInfoVo);
+            return userInfoVo;
+        }).collect(Collectors.toList());
     }
 }

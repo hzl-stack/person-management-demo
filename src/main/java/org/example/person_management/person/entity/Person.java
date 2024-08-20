@@ -29,6 +29,12 @@ public class Person extends BaseEntity implements Serializable {
     private String username;
 
     /**
+     * 组织
+     */
+    @TableField(value = "org")
+    private String org;
+
+    /**
      * 电话号码
      */
     @TableField(value = "phone_number")

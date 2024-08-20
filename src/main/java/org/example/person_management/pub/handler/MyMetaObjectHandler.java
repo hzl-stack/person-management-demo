@@ -1,4 +1,4 @@
-package org.example.person_management.person.handler;
+package org.example.person_management.pub.handler;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;

@@ -1,4 +1,4 @@
-package org.example.person_management.person.result;
+package org.example.person_management.pub.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package org.example.person_management.person.handler;
+package org.example.person_management.pub.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
@@ -14,10 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
+
+/**
+ */
 @Configuration
 public class MybatisPlusConfig {
     @Bean
     public PaginationInterceptor paginationInterceptor(){
-        return new PaginationInterceptor().setCountSqlParser(new JsqlParserCountOptimize(true));//可优化1对1连接查询效率
+        return new PaginationInterceptor().setCountSqlParser(new JsqlParserCountOptimize(true));
+        //可优化1对1连接查询效率
     }
 }

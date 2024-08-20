@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
+import org.example.person_management.org.entity.vo.OrgTreeVo;
 import org.example.person_management.person.entity.dto.DefDocDto;
 import org.example.person_management.person.entity.enums.PersonStatus;
 
@@ -26,6 +27,16 @@ public class PersonVo implements Serializable {
      * 姓名
      */
     private String username;
+
+    /**
+     * 组织
+     */
+    private String org;
+
+    /**
+     * 组织信息
+     */
+    private OrgTreeVo orgVo;
 
     /**
      * 电话号码

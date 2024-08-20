@@ -1,4 +1,4 @@
-package org.example.person_management.config;
+package org.example.person_management.pub.config;
 
 
 import org.apache.commons.lang3.StringUtils;

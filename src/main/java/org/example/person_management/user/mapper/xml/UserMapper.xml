@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.person_management.user.mapper.UserMapper">
-
+    <select id="queryUserDropDown" resultType="org.example.person_management.user.entity.User">
+        select username,name,id from t_user
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-package org.example.person_management.config;
+package org.example.person_management.pub.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

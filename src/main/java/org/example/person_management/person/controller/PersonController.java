@@ -2,29 +2,23 @@ package org.example.person_management.person.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.person_management.person.entity.Person;
-import org.example.person_management.person.entity.dto.PersonStatusDto;
 import org.example.person_management.person.entity.enums.BaseEnum;
-import org.example.person_management.person.entity.enums.PersonStatus;
 import org.example.person_management.person.entity.vo.ListPersonSearchVo;
 import org.example.person_management.person.entity.vo.ListPersonVo;
 import org.example.person_management.person.entity.vo.PersonVo;
-import org.example.person_management.person.result.Result;
-import org.example.person_management.person.result.ResultCodeEnum;
+import org.example.person_management.pub.result.Result;
+import org.example.person_management.pub.result.ResultCodeEnum;
 import org.example.person_management.person.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/hzl-web/person-management/person")
 @Slf4j
+//@RequiredArgsConstructor
 public class PersonController {
 
     @Autowired
@@ -45,9 +39,8 @@ public class PersonController {
 
     @GetMapping(path = "findById")
     public Result<PersonVo> findById(@RequestParam(name = "id", required = true) String id) {
-        Result<PersonVo> res = personService.findById(id);
 
-        return res;
+        return personService.findById(id);
     }
 
     @PostMapping("queryList")

@@ -1,10 +1,8 @@
 package org.example.person_management.person.controller;
 
 import org.example.person_management.person.entity.vo.FileVo;
-import org.example.person_management.person.result.Result;
+import org.example.person_management.pub.result.Result;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Base64;
 
 @RestController
 @CrossOrigin

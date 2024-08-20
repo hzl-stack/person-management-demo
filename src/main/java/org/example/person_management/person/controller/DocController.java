@@ -2,7 +2,7 @@ package org.example.person_management.person.controller;
 
 import org.example.person_management.person.entity.dto.PersonStatusDto;
 import org.example.person_management.person.entity.enums.PersonStatus;
-import org.example.person_management.person.result.Result;
+import org.example.person_management.pub.result.Result;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

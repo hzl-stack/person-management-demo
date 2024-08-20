@@ -96,6 +96,19 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
         return orgMapper.update(org, queryWrapper);
     }
 
+    @Override
+    public OrgTreeVo queryByCode(String code) {
+        if(code == null){
+            return null;
+        }
+        LambdaQueryWrapper<Org> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Org::getCode,code);
+        Org org = orgMapper.selectOne(queryWrapper);
+        OrgTreeVo orgTreeVo = new OrgTreeVo();
+        BeanUtils.copyProperties(org, orgTreeVo);
+        return orgTreeVo;
+    }
+
     private List<OrgTreeVo> getAllOrgAsTree(String rootId,List<Org> list){
         List<Org> orgList = list.stream().filter(org -> StringUtils.equals(org.getPid(),rootId))
                 .collect(Collectors.toList());
@@ -139,15 +152,12 @@ public class OrgServiceImpl extends ServiceImpl<OrgMapper, Org> implements OrgSe
     private List<OrgTreeVo> buildTreeForList(List<OrgTreeVo> childrens, List<Org> orgList) {
         return childrens.stream().peek(
                     children -> children.setKey(children.getCode())
-                ).peek(
-                        children -> {
-                            List<OrgTreeVo> ans = getAnswerByCode(children, orgList);
-                            children.setLeaf(ans.isEmpty());
-                            children.setChildren(buildTreeForList(ans.stream().peek(
-                                    record -> record.setKey(record.getCode())
-                            ).collect(Collectors.toList()),orgList));
-                        }
-                ).collect(Collectors.toList());
+                ).peek(children -> {
+                    List<OrgTreeVo> ans = getAnswerByCode(children, orgList);
+                    children.setLeaf(ans.isEmpty());
+                    children.setChildren(buildTreeForList(ans.stream().peek(
+                            record -> record.setKey(record.getCode())
+                    ).collect(Collectors.toList()),orgList));
+                }).collect(Collectors.toList());
     }
-
 }
